@@ -190,3 +190,12 @@ async def websocket_endpoint(websocket: WebSocket):
                     
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+# ASGI to WSGI adapter for gunicorn compatibility
+try:
+    from asgiref.wsgi import WsgiToAsgi
+    # This makes the app work with gunicorn's sync workers
+    application = WsgiToAsgi(app)
+except ImportError:
+    # Fallback if asgiref is not available
+    application = app
