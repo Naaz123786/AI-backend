@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """
-Entry point for Render deployment with gunicorn
+Entry point for Render deployment - ASGI compatible
 """
 import os
 from main import app
+
+# Export app for ASGI servers (gunicorn, uvicorn)
+# This makes the app accessible as 'app:app'
+__all__ = ['app']
 
 # Set host and port for Render
 HOST = "0.0.0.0"
@@ -16,7 +20,7 @@ if __name__ == "__main__":
     print(f"📝 API endpoint: http://{HOST}:{PORT}/ask")
     
     uvicorn.run(
-        "main:app",
+        app,
         host=HOST,
         port=PORT,
         reload=False,

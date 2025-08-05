@@ -86,6 +86,14 @@ def try_gemini_with_fallback(prompt):
     
     return {"error": "All models failed. Please try again later."}
 
+@app.get("/")
+async def root():
+    return {"message": "AI Interview Assistant Backend is running!", "status": "healthy"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "ai-interview-backend"}
+
 @app.post("/ask")
 async def ask(request: Request):
     data = await request.json()
