@@ -18,10 +18,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000", 
+        "https://ai-frontend-ten-orcin.vercel.app",  # Your actual Vercel URL
         "https://*.vercel.app",
-        "https://www.safartechlab.com",
-        "https://safartechlab.com",
-        "*"  # Remove this in production and add specific domains
+        "*"  # Remove this in production for better security
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
