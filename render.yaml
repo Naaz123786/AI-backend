@@ -3,11 +3,11 @@ services:
     name: ai-interview-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python run_server.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: PORT
         generateValue: true
-      - key: AIzaSyAauJ-z4F0fvc8-bh6iuVZzEAlGku0Jy58
-        sync: false
+      - key: GEMINI_API_KEY
+        value: AIzaSyAauJ-z4F0fvc8-bh6iuVZzEAlGku0Jy58
