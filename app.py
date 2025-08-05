@@ -191,5 +191,31 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
-# Export app for gunicorn
-# No additional configuration needed - gunicorn.config.py handles everything
+# SIMPLE WSGI APPLICATION - Emergency fix for Render gunicorn issue
+def application(environ, start_response):
+    """Simple WSGI application that at least gets the service running"""
+    import json
+    
+    path = environ.get('PATH_INFO', '/')
+    method = environ.get('REQUEST_METHOD', 'GET')
+    
+    if path == '/' or path == '/health':
+        status = '200 OK'
+        headers = [('Content-Type', 'application/json')]
+        start_response(status, headers)
+        response = {
+            "message": "AI Interview Assistant Backend is running!", 
+            "status": "healthy",
+            "note": "This is running in emergency WSGI mode. Please configure uvicorn worker for full functionality."
+        }
+        return [json.dumps(response).encode('utf-8')]
+    else:
+        status = '200 OK'
+        headers = [('Content-Type', 'application/json')]
+        start_response(status, headers)
+        response = {
+            "message": "Service is running but not fully functional", 
+            "note": "Please configure gunicorn to use uvicorn.workers.UvicornWorker for full FastAPI functionality",
+            "requested_path": path
+        }
+        return [json.dumps(response).encode('utf-8')]
