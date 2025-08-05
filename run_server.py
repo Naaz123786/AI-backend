@@ -16,14 +16,19 @@ if __name__ == "__main__":
     try:
         # Use reload=False for production
         uvicorn.run(
-            app, 
+            "main:app",  # Use string format for better compatibility
             host=host, 
             port=port, 
             reload=False,
             workers=1,
-            log_level="info"
+            log_level="info",
+            access_log=True
         )
     except KeyboardInterrupt:
         print("\n👋 Server stopped.")
     except Exception as e:
         print(f"❌ Error: {e}")
+
+# For Gunicorn compatibility (if Render uses it)
+# This allows the app to be imported directly
+from main import app as application
